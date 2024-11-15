@@ -7,12 +7,13 @@ import * as yup from "yup";
 import { Container, LoginContainer, Column, Spacing, Title } from "./styles";
 import { defaultValues, IFormLogin } from "./types";
 
+// Definindo o schema de validação com yup
 const schema = yup
   .object({
     email: yup.string().email("E-mail inválido").required("Campo obrigatório"),
     password: yup
       .string()
-      .min(6, "No minimo 6 caracteres")
+      .min(6, "No mínimo 6 caracteres")
       .required("Campo obrigatório"),
   })
   .required();
@@ -23,9 +24,9 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm<IFormLogin>({
     resolver: yupResolver(schema),
-    mode: "onBlur",
+    mode: "onBlur",  // Validação ocorre ao sair do campo
     defaultValues,
-    reValidateMode: "onChange",
+    reValidateMode: "onChange",  // Revalida ao alterar os campos
   });
 
   return (
@@ -49,7 +50,8 @@ const Login = () => {
             errorMessage={errors?.password?.message}
           />
           <Spacing />
-          <Button title="Entrar" />
+          {/* O botão é habilitado/desabilitado com base no valor de isValid */}
+          <Button title="Entrar" disabled={!isValid} />
         </Column>
       </LoginContainer>
     </Container>
